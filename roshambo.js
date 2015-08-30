@@ -8,45 +8,79 @@ var human_bout = 0;   //variables used to keep score. eng = engagement,
 var com_bout = 0;
 var human_match = 0;
 var com_match = 0;
+var new_match = '';
 
-name = ''
+var name = '';
 
 function reset_score() {
   human_eng = 0;
-  human_bout = 0;
-  human_match = 0;     //resets all scores to zero after a match
+  human_bout = 0;     //resets all scores to zero after a match
   com_eng = 0;
   com_bout = 0;
-  com_match = 0;
-}
+};
+
+
+high_scores_raw = [];
+high_scores = high_scores_raw.sort(function(a, b){return a-b});
+
+
 
 function match() {
+    alert('High Scores: \n' + high_scores.join(""));
 
-  if(human_match === 1) {
-    alert('Sweet Victory! Would you like to play again?');
-    reset_score();
-    match();
+    if(human_match >= 1) {
+      var new_match = prompt('YOU WIN! Sweet Victory! Would you like to play again?');
+      if (new_match.toUpperCase() === 'YES') {
+      reset_score();
+      match();
+   }
+      else if (new_match.toUpperCase() === 'NO') {
+      alert('Thanks for playing ' + name + '. See you next time!');
+      reset_score();
+      high_scores_raw.push(name + "     " + human_match + '\n');
+      name = '';
+      human_match = 0;
+      com_match = 0;
+      return;
+
+   }  else {
+      reset_score;
+      return;
+    }
+   }
+    else if(com_match >= 1) {
+    var new_match = prompt('YOU LOSE! Even though you were utterly humiliated, would you like to lose again? Bring your friends and family to watch!');
+      if (new_match.toUpperCase() === 'YES') {
+      reset_score();
+      match();
+    }
+      else if(new_match.toUpperCase() === 'NO') {
+      alert('Thanks for playing ' + name + '. See you next time!');
+      reset_score();
+      high_scores_raw.push(name + "     " + human_match + '\n');
+      name = '';
+      human_match = 0;
+      com_match = 0;
+      return;
+    }
   }
-  else if(com_match === 1) {
-    alert('Even though you were utterly humiliated, would you like to lose again? Bring your friends and family to watch!');
-    reset_score();
-    match();
-  }
-  else {
-    bout();
-  }
-}
+    else {
+      bout();
+    }
+  };
 
 function bout() {
 
   if(human_bout === 2) {
     alert('You will pay for this, ' + name + ', NEXT TIIIIIIME!');
     human_match += 1;
+    reset_score();
     match();
 
   } else if(com_bout === 2) {
     alert('A strong foe is better than a weak friend, ' + name + ' . . . I wish you were stronger! Mwahahahaha!');
     com_match += 1;
+    reset_score();
     match();
   }
   else {
@@ -57,12 +91,12 @@ function bout() {
       if(human_eng === 2 && human_bout === 1) {
         human_bout += 1;
         human_eng = 0;
-        com_bout = 0;
+        com_eng = 0;
         bout();
       } else if(com_eng === 2 && com_bout === 1) {
         com_bout += 1;
         com_eng = 0;
-        human_bout = 0;
+        human_eng = 0;
         bout();
       };
 
@@ -70,13 +104,13 @@ function bout() {
         alert('You have won a bout, ' + name + ', but the match is not over!');
         human_bout += 1;
         human_eng = 0;
-        com_bout = 0;
+        com_eng = 0;
         bout();
       } else if(com_eng === 2) {
         alert('Your demise is imminent, ' + name + ', one more bout of victory for me and you are toast!');
         com_bout += 1;
         com_eng = 0;
-        human_bout = 0;
+        human_eng = 0;
         bout();
       }
       else {
